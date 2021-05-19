@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import style from '../Welcome.module.scss';
+import style from '../Scan.module.scss';
 
 class DetectFace extends Component {
 

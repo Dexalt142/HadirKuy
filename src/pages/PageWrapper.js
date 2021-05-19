@@ -1,5 +1,8 @@
 import { Component } from 'react';
 import WelcomePage from './Welcome/Welcome';
+import ScanPage from './Scan/Scan';
+import LoginPage from './Login/Login';
+
 import NotFoundPage from './Error/NotFound';
 
 class PageWrapper extends Component {
@@ -11,6 +14,12 @@ class PageWrapper extends Component {
         switch(pageName) {
             case 'welcome':
                 return <WelcomePage/>;
+
+            case 'scan':
+                return <ScanPage />;
+            
+            case 'guru/login':
+                return <LoginPage />;
             
             default:
                 return <NotFoundPage/>;
