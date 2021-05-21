@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import style from './Welcome.module.scss';
 import BaseContext from '../../BaseContext';
 import axios from 'axios';
@@ -63,4 +63,4 @@ class Welcome extends Component {
     }
 }
 
-export default withRouter(Welcome);
+export default Welcome;

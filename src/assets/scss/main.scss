@@ -1,12 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;800&display=swap');
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
 $blue: #3E2ABE;
+$gray: #666666;
+$lightGray: #BEBFC3;
 
 * {
     box-sizing: border-box;
+    font-family: 'Nunito';
 }
 
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    // height: 100vh;
     background-color: $blue;
+}
+
+.pageTitleContainer {
+    padding: 5rem 0rem;
+
+    .pageTitle {
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-align: center;
+    }
+    
+    .pageSubtitle {
+        text-align: center;
+        color: $gray;
+    }
+}
+
+.btn {
+    border-radius: .5rem;
+    border: none;
+
+    &.btn-primary {
+        background-color: $blue;
+    }
+}
+
+.form-control {
+    border: 2px solid $lightGray;
+    border-radius: .5rem;
+}
+
+@media screen and (min-width: 900px) {
+    .pageTitleContainer {
+        padding: 0rem;
+        padding-bottom: 5rem;
+    }
 }
