@@ -26,16 +26,16 @@ class PageWrapper extends Component {
     loadPage(pageName) {
         switch(pageName) {
             case 'welcome':
-                return <WelcomePage />;
+                return <WelcomePage {...this.props}/>;
 
             case 'scan':
-                return <ScanPage />;
+                return <ScanPage {...this.props}/>;
             
             case 'guru/login':
-                return <LoginPage />;
+                return <LoginPage {...this.props}/>;
 
             case 'guru':
-                return <DashboardPage />;
+                return <DashboardPage {...this.props}/>;
             
             default:
                 return <NotFoundPage />;
