@@ -1,9 +1,18 @@
 import { Component } from 'react';
+import style from './NotFound.module.scss';
 
 class NotFound extends Component {
     render() {
         return (
-            <div>404. Not Found</div>
+            <div className={style.container}>
+                <div className={style.notFoundEmoji}>
+                    ¯\_(ツ)_/¯
+                </div>
+
+                <div className={style.notFoundTitle}>
+                    Halaman yang anda cari tidak dapat ditemukan.
+                </div>
+            </div>
         );
     }
 }

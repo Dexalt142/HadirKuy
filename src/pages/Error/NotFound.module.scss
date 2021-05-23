@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #FFF;
+    text-align: center;
+
+    .notFoundEmoji {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .notFoundTitle {
+        font-size: 2rem;
+    }
+}

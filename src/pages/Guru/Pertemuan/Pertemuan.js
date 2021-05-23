@@ -5,25 +5,25 @@ import axios from 'axios';
 
 import layoutStyle from '../LayoutGuru.module.scss';
 
-class Dashboard extends Component {
+class Pertemuan extends Component {
 
     static contextType = BaseContext;
 
     constructor(props) {
         super(props);
     }
-    
+
     componentDidMount() {
     }
-    
+
     render() {
         return (
             <div className="container-fluid">
                 <div className={layoutStyle.contentTitle}>
-                    Dashboard
+                    Daftar Pertemuan
                 </div>
                 <div className="row">
-                    
+
                 </div>
             </div>
         )
@@ -31,4 +31,4 @@ class Dashboard extends Component {
 
 }
 
-export default Dashboard;
+export default Pertemuan;

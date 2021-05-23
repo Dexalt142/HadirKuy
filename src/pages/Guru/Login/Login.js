@@ -46,8 +46,8 @@ class Login extends Component {
                     localStorage.setItem('token', token);
                     this.context.setBaseState('user_data', userData);
 
-                    this.setState({ loginLoading: false });
-                    this.props.history.push('/guru');
+                    // this.setState({ loginLoading: false });
+                    // this.props.history.push('/guru');
                 })
                 .catch(err => {
 

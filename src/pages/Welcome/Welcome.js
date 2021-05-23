@@ -43,6 +43,8 @@ class Welcome extends Component {
                     if(err.response.data.status = 404) {
                         this.setState({error: 'Pertemuan tidak ditemukan'});
                     }
+                } else {
+                    this.setState({error: 'Telah terjadi kesalahan'});
                 }
 
                 this.setState({cekLoading: false});
@@ -53,6 +55,9 @@ class Welcome extends Component {
     }
 
     componentDidMount() {
+        if(this.context.baseState.pertemuan) {
+            this.props.history.push('/scan');
+        }
     }
 
     showErrorMessage() {
@@ -93,6 +98,8 @@ class Welcome extends Component {
                             <button className="btn btn-primary w-100" type="submit" disabled={this.state.cekLoading}>Cek Pertemuan</button>
                         </div>
                     </form>
+
+                    <Link to={'/guru'}>Masuk sebagai guru</Link>
                 </div>
             </div>
         );

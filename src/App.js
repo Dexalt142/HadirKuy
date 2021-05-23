@@ -51,10 +51,6 @@ class App extends Component {
         localStorage.clear('token');
       });
     }
-
-    this.setState({
-      user_data: 'test'
-    });
   }
 
   render() {
@@ -65,6 +61,8 @@ class App extends Component {
             <Route path="/" exact render={(props) => <PageWrapper pageName='welcome' {...props}/>}/>
             <Route path="/scan" exact render={(props) => <PageWrapper pageName='scan' {...props}/>}/>
             <Route path="/guru" exact render={(props) => <PageWrapper pageName='guru' auth='private' {...props}/>}/>
+            <Route path="/guru/siswa" exact render={(props) => <PageWrapper pageName='guru/siswa' auth='private' {...props}/>}/>
+            <Route path="/guru/pertemuan" exact render={(props) => <PageWrapper pageName='guru/pertemuan' auth='private' {...props}/>}/>
             <Route path="/guru/login" exact render={(props) => <PageWrapper pageName='guru/login' auth='guest' {...props}/>}/>
             
             <Route render={(props) => <PageWrapper pageName='' {...props} />} />

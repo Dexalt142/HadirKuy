@@ -6,7 +6,11 @@ import AuthHandler from '../assets/components/AuthHandler/AuthHandler';
 import WelcomePage from './Welcome/Welcome';
 import ScanPage from './Scan/Scan';
 import LoginPage from './Guru/Login/Login';
+
+import LayoutGuru from './Guru/LayoutGuru';
 import DashboardPage from './Guru/Dashboard/Dashboard';
+import SiswaPage from './Guru/Siswa/Siswa';
+import PertemuanPage from './Guru/Pertemuan/Pertemuan';
 
 import NotFoundPage from './Error/NotFound';
 
@@ -21,6 +25,7 @@ class PageWrapper extends Component {
     }
 
     componentDidMount() {
+        console.log('PW CDM');
     }
     
     loadPage(pageName) {
@@ -35,7 +40,13 @@ class PageWrapper extends Component {
                 return <LoginPage {...this.props}/>;
 
             case 'guru':
-                return <DashboardPage {...this.props}/>;
+                return <LayoutGuru><DashboardPage {...this.props} /></LayoutGuru>;
+
+            case 'guru/siswa':
+                return <LayoutGuru><SiswaPage {...this.props} /></LayoutGuru>;
+
+            case 'guru/pertemuan':
+                return <LayoutGuru><PertemuanPage {...this.props} /></LayoutGuru>;
             
             default:
                 return <NotFoundPage />;
