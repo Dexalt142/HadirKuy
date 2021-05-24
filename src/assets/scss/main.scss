@@ -17,6 +17,10 @@ body {
     background-color: $blue;
 }
 
+.bg-primary {
+    background-color: $blue !important;
+}
+
 .pageTitleContainer {
     padding: 5rem 0rem;
 
