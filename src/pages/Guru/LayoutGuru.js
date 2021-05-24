@@ -33,8 +33,13 @@ class LayoutGuru extends Component {
         localStorage.removeItem('token');
         this.context.setBaseState('user_data', null);
     }
-
+    
     render() {
+        let dataGuru = {nama: 'Memuat'};
+        if (this.context.baseState.user_data) {
+            dataGuru = this.context.baseState.user_data;
+        }
+
         return (
             <div className={style.layoutContainer}>
                 <div className={style.sidebarContainer}>
@@ -60,10 +65,17 @@ class LayoutGuru extends Component {
                             </div>
                         </div>
 
-                        <button className={style.navLink} onClick={this.logout}>
-                            <Feather.Power/>
-                            <span className={style.navTitle}>Keluar</span>
-                        </button>
+                        <div>
+                            <button className={style.navLink}>
+                                <Feather.User/>
+                                <span className={style.navTitle}>{ dataGuru.nama }</span>
+                            </button>
+                            <button className={style.navLink} onClick={this.logout}>
+                                <Feather.Power/>
+                                <span className={style.navTitle}>Keluar</span>
+                            </button>
+                        </div>
+
                     </nav>
 
                 </div>

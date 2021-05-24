@@ -13,7 +13,7 @@ class Pertemuan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pertemuan: []
+            pertemuan: null
         }
 
         this.fetchPertemuan = this.fetchPertemuan.bind(this);
@@ -34,6 +34,11 @@ class Pertemuan extends Component {
             this.setState({pertemuan: pertemuan});
         })
         .catch(err => {
+            if(err.response) {
+                if(err.response.status === 404) {
+                    this.setState({pertemuan: []});
+                }
+            }
         });
     }
 
@@ -44,32 +49,40 @@ class Pertemuan extends Component {
     render() {
         let content = '';
 
-        if(this.state.pertemuan.length > 0) {
-            content = this.state.pertemuan.map(pertemuan => {
-                let formatDate = new Date(`${pertemuan.tanggal} ${pertemuan.waktu}`);
-                let tanggal = `${formatDate.getDate()}/${formatDate.getMonth()}/${formatDate.getFullYear()}`;
-
-                return (
-                    <div className="col-md-3 mb-4" key={pertemuan.id}>
-                        <div className="card">
-                            <div className="card-header bg-primary text-white d-flex justify-content-between">
-                                <div>
-                                    {pertemuan.nama}
+        if(this.state.pertemuan) {
+            if(this.state.pertemuan.length > 0) {
+                content = this.state.pertemuan.map(pertemuan => {
+                    let formatDate = new Date(`${pertemuan.tanggal} ${pertemuan.waktu}`);
+                    let tanggal = `${formatDate.getDate()}/${formatDate.getMonth() + 1}/${formatDate.getFullYear()}`;
+    
+                    return (
+                        <div className="col-md-3 mb-4" key={pertemuan.id}>
+                            <div className={'card ' + style.pertemuanCard}>
+                                <div className="card-header bg-primary text-white d-flex justify-content-between">
+                                    <div>
+                                        {pertemuan.nama}
+                                    </div>
+                                    <div>
+                                        {pertemuan.kode_pertemuan}  
+                                    </div>
                                 </div>
-                                <div>
-                                    {pertemuan.kode_pertemuan}  
+                                <div className="card-body">
+                                    <div className="text-center">
+                                        <h4>{ tanggal }</h4>
+                                    </div>
+                                    <Link className="btn btn-primary w-100" to={'/guru/pertemuan/' + pertemuan.id}>Detail</Link>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="text-center">
-                                    <h4>{ tanggal }</h4>
-                                </div>
-                                <Link className="btn btn-primary w-100" to={'/guru/pertemuan/' + pertemuan.id}>Detail</Link>
                             </div>
                         </div>
+                    );
+                });
+            } else {
+                content = (
+                    <div className="col-12">
+                        <h5>Pertemuan tidak ditemukan.</h5>
                     </div>
                 );
-            });
+            }
         } else {
             let numOfCard = [1, 2, 3, 4];
             content = numOfCard.map(i => {
@@ -84,6 +97,7 @@ class Pertemuan extends Component {
                 </div>;
             });
         }
+
 
         return (
             <div className="container-fluid">
