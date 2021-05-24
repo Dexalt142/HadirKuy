@@ -27,6 +27,7 @@ class Scan extends Component {
         this.detectFace = this.detectFace.bind(this);
         this.loadDetector = this.loadDetector.bind(this);
         this.rescanButton = this.rescanButton.bind(this);
+        this.backToWelcome = this.backToWelcome.bind(this);
     }
 
     async loadReferenceData() {
@@ -187,10 +188,17 @@ class Scan extends Component {
     }
 
     componentWillUnmount() {
-        if(this.videoFeed) {
-            this.videoFeed.srcObject = null;
-        }
+        // if(this.videoFeed) {
+        //     this.videoFeed.getTracks().forEach(track => {
+        //         track.stop();
+        //     });
+        // }
         clearInterval(this.detectInterval);
+    }
+
+    backToWelcome() {
+        this.context.setBaseState('pertemuan', null);
+        this.props.history.push('/');
     }
 
     render() {
@@ -207,7 +215,7 @@ class Scan extends Component {
                     <div className="col-md-6">
                         <div className={style.scannerHeader}>
                             <div className={style.scannerTitle}>
-                                Tanggal
+                                Tanggal dan Waktu
                             </div>
                             <div className={style.scannerSubtitle}>
                                 -
@@ -234,6 +242,16 @@ class Scan extends Component {
                         <div className={style.scannerContent}>
                             <img className={style.scannerImage} src={userImage}/>
                         </div>
+                    </div>
+                </div>
+
+                <div className="row mt-5">
+                    <div className="col-md-6 d-flex justify-content-center">
+                        <button className="btn btn-lg btn-primary px-5">Lihat Rekap</button>
+                    </div>
+
+                    <div className="col-md-6 d-flex justify-content-center">
+                        <button className="btn btn-lg btn-primary-inverse px-5" onClick={this.backToWelcome}>Tutup</button>
                     </div>
                 </div>
             </div>

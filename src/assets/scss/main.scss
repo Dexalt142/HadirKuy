@@ -43,6 +43,12 @@ body {
     &.btn-primary {
         background-color: $blue;
     }
+
+    &.btn-primary-inverse {
+        background-color: #FFF;
+        color: $blue;
+        border: 1px solid $blue;
+    }
 }
 
 .form-control {
