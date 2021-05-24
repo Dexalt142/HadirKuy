@@ -11,6 +11,7 @@ import LayoutGuru from './Guru/LayoutGuru';
 import DashboardPage from './Guru/Dashboard/Dashboard';
 import SiswaPage from './Guru/Siswa/Siswa';
 import PertemuanPage from './Guru/Pertemuan/Pertemuan';
+import PertemuanDetailPage from './Guru/Pertemuan/PertemuanDetail/PertemuanDetail';
 
 import NotFoundPage from './Error/NotFound';
 
@@ -25,7 +26,6 @@ class PageWrapper extends Component {
     }
 
     componentDidMount() {
-        console.log('PW CDM');
     }
     
     loadPage(pageName) {
@@ -47,6 +47,9 @@ class PageWrapper extends Component {
 
             case 'guru/pertemuan':
                 return <LayoutGuru><PertemuanPage {...this.props} /></LayoutGuru>;
+
+            case 'guru/pertemuan/detail':
+                return <LayoutGuru><PertemuanDetailPage {...this.props} /></LayoutGuru>;
             
             default:
                 return <NotFoundPage />;

@@ -4,6 +4,7 @@ $whiteInactive: #AFA5D9;
 $white: #FFF;
 
 $navWidth: 100px;
+$navbarHeight: 60px;
 
 .layoutContainer {
     .sidebarContainer {
@@ -12,15 +13,19 @@ $navWidth: 100px;
         left: 0;
         width: $navWidth + 156px;
         height: 100vh;
-        background-color: $primaryColor;
-        padding: 1rem;
-
+        z-index: 10;
+        
         .sidebar {
+            position: relative;
             display: flex;
+            left: 0;
             height: 100%;
             flex-direction: column;
             justify-content: space-between;
+            background-color: $primaryColor;
+            padding: 1rem;
             overflow: hidden;
+            
             
             .navBrand {
                 display: block;
@@ -41,6 +46,9 @@ $navWidth: 100px;
                 color: $whiteInactive;
                 margin-bottom: 1.5rem;
                 text-decoration: none;
+                background-color: transparent;
+                border: none;
+                padding: 0;
                 transition: .2s;
 
                 &:hover, &.active {
@@ -55,9 +63,12 @@ $navWidth: 100px;
     }
 
     .contentContainer {
+        position: relative;
         background-color: #FFF;
         padding-left: $navWidth + 156px;
+        padding-top: .5rem;
         min-height: 100vh;
+        min-width: 100vw;
 
         .contentTitle {
             font-size: 2.5rem;

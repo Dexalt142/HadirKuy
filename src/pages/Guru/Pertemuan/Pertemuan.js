@@ -48,18 +48,23 @@ class Pertemuan extends Component {
             content = this.state.pertemuan.map(pertemuan => {
                 let formatDate = new Date(`${pertemuan.tanggal} ${pertemuan.waktu}`);
                 let tanggal = `${formatDate.getDate()}/${formatDate.getMonth()}/${formatDate.getFullYear()}`;
-                
+
                 return (
                     <div className="col-md-3 mb-4" key={pertemuan.id}>
                         <div className="card">
-                            <div className="card-header bg-primary text-white">
-                                { pertemuan.nama }
+                            <div className="card-header bg-primary text-white d-flex justify-content-between">
+                                <div>
+                                    {pertemuan.nama}
+                                </div>
+                                <div>
+                                    {pertemuan.kode_pertemuan}  
+                                </div>
                             </div>
                             <div className="card-body">
                                 <div className="text-center">
                                     <h4>{ tanggal }</h4>
                                 </div>
-                                <Link className="btn btn-primary w-100">Detail</Link>
+                                <Link className="btn btn-primary w-100" to={'/guru/pertemuan/' + pertemuan.id}>Detail</Link>
                             </div>
                         </div>
                     </div>
@@ -67,8 +72,8 @@ class Pertemuan extends Component {
             });
         } else {
             let numOfCard = [1, 2, 3, 4];
-            content = numOfCard.map(() => {
-                return <div className="col-md-3 mb-4">
+            content = numOfCard.map(i => {
+                return <div className="col-md-3 mb-4" key={i}>
                     <div className={'card ' + style.pertemuanSkeleton}>
                         <div className={'card-header py-3 ' + style.skeletonLoader}></div>
                         <div className="card-body">
