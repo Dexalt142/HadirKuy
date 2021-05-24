@@ -1,31 +1,71 @@
-body {
-    height: 100vh;
-}
-
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    height: 100%;
-}
+    min-height: 100vh;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: #FFF;
 
-.video_wrapper {
-    position: relative;
-    width: 1024px;
-    height: 768px;
-    border-radius: 1rem;
-    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.25);
-    overflow: hidden;
-}
+    .scanTitle {
+        font-size: 3rem;
+        font-weight: 800;
+        text-align: center;
+    }
 
-#source_video {
-    width: 1024px;
-    height: 768px;
-}
+    .scanSubtitle {
+        font-size: 1.5rem;
+        text-align: center;
+    }
 
-canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
+    .scannerHeader {
+        .scannerTitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .scannerSubtitle {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+    }
+
+    .scannerContent {
+        position: relative;
+        padding-top: 88%;
+        border: 1px solid rgba(0, 0, 0, .25);
+        border-radius: 1rem;
+        margin-top: 1rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        overflow: hidden;
+
+        .scannerImage, .scannerVideoWrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .scannerVideoWrapper {
+            #scannerVideoSource {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+
+            #scannerResult {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    }
 }

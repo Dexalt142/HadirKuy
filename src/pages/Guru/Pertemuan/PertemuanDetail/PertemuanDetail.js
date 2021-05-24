@@ -23,7 +23,7 @@ class PertemuanDetail extends Component {
             }
         }
 
-        axios.get('/pertemuan/' + this.pertemuanId, config)
+        axios.get('/pertemuan/detail/' + this.pertemuanId, config)
         .then(res => {
             let pertemuan = res.data.data;
             this.setState({pertemuan: pertemuan});

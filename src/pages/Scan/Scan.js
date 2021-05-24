@@ -3,9 +3,9 @@ import * as FaceAPI from 'face-api.js/';
 import style from './Scan.module.scss';
 import BaseContext from '../../BaseContext';
 import { withRouter } from 'react-router-dom';
-
-import DetectFace from './fragments/DetectFace';
 import FaceModel from '../../face_model.json';
+
+import userImage from '../../assets/img/user.svg';
 
 class Scan extends Component {
 
@@ -137,7 +137,7 @@ class Scan extends Component {
 
     loadDetector() {
         if(!this.state.faceFound) {
-            this.videoFeed = document.querySelector(`#${style.source_video}`);
+            this.videoFeed = document.querySelector(`#${style.scannerVideoSource}`);
             Promise.all([
                 FaceAPI.loadTinyFaceDetectorModel('/models'),
                 FaceAPI.loadFaceLandmarkModel('/models'),
@@ -149,8 +149,9 @@ class Scan extends Component {
             });
         
             this.videoFeed.addEventListener("playing", () => {
-                let videoWrapper = document.querySelector(`.${style.video_wrapper}`);
+                let videoWrapper = document.querySelector(`.${style.scannerVideoWrapper}`);
                 this.canvas = FaceAPI.createCanvasFromMedia(this.videoFeed);
+                this.canvas.id = style.scannerResult;
                 videoWrapper.append(this.canvas);
         
                 this.displaySize = {
@@ -194,7 +195,48 @@ class Scan extends Component {
 
     render() {
         return (
-            <DetectFace/>
+            <div className={"container " + style.container}>
+                <div className={style.scanTitle}>
+                    HadirKuy
+                </div>
+                <div className={style.scanSubtitle}>
+                    Sistem Presensi Siswa Menggunakan Face Recognition
+                </div>
+
+                <div className="row mt-5">
+                    <div className="col-md-6">
+                        <div className={style.scannerHeader}>
+                            <div className={style.scannerTitle}>
+                                Tanggal
+                            </div>
+                            <div className={style.scannerSubtitle}>
+                                -
+                            </div>
+                        </div>
+
+                        <div className={style.scannerContent}>
+                            <div className={style.scannerVideoWrapper}>
+                                <video id={style.scannerVideoSource} autoPlay muted></video>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-md-6">
+                        <div className={style.scannerHeader}>
+                            <div className={style.scannerTitle}>
+                                Data Siswa
+                            </div>
+                            <div className={style.scannerSubtitle}>
+                                -
+                            </div>
+                        </div>
+
+                        <div className={style.scannerContent}>
+                            <img className={style.scannerImage} src={userImage}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

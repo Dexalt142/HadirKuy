@@ -6,6 +6,8 @@ import axios from 'axios';
 import layoutStyle from '../LayoutGuru.module.scss';
 import style from './Siswa.module.scss';
 
+import userImage from '../../../assets/img/user.svg';
+
 class Siswa extends Component {
 
     static contextType = BaseContext;
@@ -61,7 +63,7 @@ class Siswa extends Component {
                             <div className={'card ' + style.siswaCard}>
                                 <div className={'card-body bg-primary ' + style.siswaCardBody}>
                                     <div className={style.pictureWrapper}>
-                                        <img src="https://images.pexels.com/photos/7574937/pexels-photo-7574937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
+                                        <img src={siswa.foto ? siswa.foto : userImage} />
                                         <div className={style.pictureOverlay}></div>
                                     </div>
                                     <div className={style.siswaContent}>
