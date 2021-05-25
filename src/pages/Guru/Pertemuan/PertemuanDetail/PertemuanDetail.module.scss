@@ -1,0 +1,38 @@
+$primary: #3E2ABE;
+
+.pertemuanSkeleton {
+    .skeletonLoader {
+        background: #e3e7ea;
+        background-image: -webkit-linear-gradient(left,#e3e7ea,#edeef1 20%,#e3e7ea 40%,#e3e7ea);
+        background-repeat: no-repeat;
+        border-radius: 2px;
+        -webkit-animation: skeletonPulse 1s linear infinite forwards;
+        animation: skeletonPulse 1s linear infinite forwards;
+    }
+}
+
+.infoCard {
+    background-color: $primary;
+    color: #FFF;
+
+    .infoCardTitle {
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+    
+    .infoCardSubtitle {
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+}
+
+
+@keyframes skeletonPulse {
+    0% {
+        background-position: -450px 0;
+    }
+    100% {
+        background-position: 450px 0;
+    }
+}
