@@ -20,6 +20,7 @@ class App extends Component {
 
       pertemuan: null,
       presensi: null,
+      siswa: null
     };
 
     this.setBaseState = this.setBaseState.bind(this);

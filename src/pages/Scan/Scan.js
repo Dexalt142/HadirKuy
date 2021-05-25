@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import FaceModel from '../../face_model.json';
 
 import userImage from '../../assets/img/user.svg';
+import axios from 'axios';
 
 class Scan extends Component {
 
@@ -19,7 +20,10 @@ class Scan extends Component {
         this.displaySize = null;
         this.detectInterval = null;
         this.state = {
-            faceFound: false
+            sendingResult: false,
+            faceFound: false,
+            presensi: null,
+            siswa: null,
         };
 
         this.loadReferenceData = this.loadReferenceData.bind(this);
@@ -28,6 +32,8 @@ class Scan extends Component {
         this.loadDetector = this.loadDetector.bind(this);
         this.rescanButton = this.rescanButton.bind(this);
         this.backToWelcome = this.backToWelcome.bind(this);
+        this.setVideoListener = this.setVideoListener.bind(this);
+        this.videoListener = this.videoListener.bind(this);
     }
 
     async loadReferenceData() {
@@ -53,87 +59,102 @@ class Scan extends Component {
     }
 
     async detectFace() {
-        const detection = await FaceAPI.detectSingleFace(this.videoFeed, new FaceAPI.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
         this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        if(detection) {
-            const scaledDetection = FaceAPI.resizeResults(detection, this.displaySize);
-            
-            if(scaledDetection) {
-                const bottomRight = {
-                    x: scaledDetection.detection.box.bottomLeft.x - 2,
-                    y: scaledDetection.detection.box.bottomLeft.y + 2
-                };
-                const date = `${new Date().toLocaleDateString()}`;
-                const time = `${new Date().toLocaleTimeString()}`;
-                let texts = [
-                    `Confidence: ${(scaledDetection.detection.score * 100).toFixed(1)}%`,
-                    // `Tanggal: ${date}`,
-                    // `Waktu: ${time}`
-                ];
+        if(!this.state.faceFound) {
+            const detection = await FaceAPI.detectSingleFace(this.videoFeed, new FaceAPI.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+    
+            if(detection) {
+                const scaledDetection = FaceAPI.resizeResults(detection, this.displaySize);
+                
+                if(scaledDetection) {
+                    const bottomRight = {
+                        x: scaledDetection.detection.box.bottomLeft.x - 2,
+                        y: scaledDetection.detection.box.bottomLeft.y + 2
+                    };
+                    const date = `${new Date().toLocaleDateString()}`;
+                    const time = `${new Date().toLocaleTimeString()}`;
+                    let texts = [
+                        `Confidence: ${(scaledDetection.detection.score * 100).toFixed(1)}%`,
+                        // `Tanggal: ${date}`,
+                        // `Waktu: ${time}`
+                    ];
+    
+                    if(scaledDetection.detection.score > 0.9) {
+                        if(this.referenceData) {
+                            const faceMatcher = new FaceAPI.FaceMatcher(this.referenceData, 0.4);
+    
+                            const result = faceMatcher.findBestMatch(scaledDetection.descriptor);
+    
+                            texts.push(result.toString());
+    
+                            // new FaceAPI.draw.DrawBox(
+                            //     scaledDetection.detection.box,
+                            //     {
+                            //         boxColor: '#FFF',
+                            //         lineWidth: 4
+                            //     }
+                            // ).draw(this.canvas);
+    
+                            // new FaceAPI.draw.DrawTextField(
+                            //     texts,
+                            //     bottomRight,
+                            //     {
+                            //         fontSize: 16,
+                            //         fontStyle: 'Arial',
+                            //         padding: 10
+                            //     }
+                            // ).draw(this.canvas);
 
-                if(scaledDetection.detection.score > 0.9) {
-                    if(this.referenceData) {
-                        const faceMatcher = new FaceAPI.FaceMatcher(this.referenceData, 0.4);
-
-                        const result = faceMatcher.findBestMatch(scaledDetection.descriptor);
-
-                        texts.push(result.toString());
-
-                        new FaceAPI.draw.DrawBox(
-                            scaledDetection.detection.box,
-                            {
-                                boxColor: '#FFF',
-                                lineWidth: 4
+                            if(result.label !== 'unknown') {
+                                clearInterval(this.detectInterval);
+                                this.setState({faceFound: true});
+                                this.videoFeed.pause();
+    
+                                const postresult = await axios.post('/presensi', {
+                                    pertemuan_id: this.context.baseState.pertemuan.id,
+                                    siswa_uid: result.label
+                                })
+                                .then(res => {
+                                    this.context.setBaseState('siswa', res.data.data.siswa);
+                                    this.context.setBaseState('presensi', res.data.data.presensi);
+                                })
+                                .catch(err => {
+                                    this.videoFeed.play();
+                                    this.setVideoListener();
+                                    this.setState({ faceFound: false });
+                                    this.detectInterval = setInterval(this.detectFace, 150);
+                                });
                             }
-                        ).draw(this.canvas);
 
-                        new FaceAPI.draw.DrawTextField(
-                            texts,
-                            bottomRight,
-                            {
-                                fontSize: 16,
-                                fontStyle: 'Arial',
-                                padding: 10
-                            }
-                        ).draw(this.canvas);
+                        }
+    
                     }
-
                 }
-    
-                // FaceAPI.draw.drawDetections(this.canvas, scaledDetection);
-                // FaceAPI.draw.drawFaceLandmarks(this.canvas, scaledDetection);
-
-                // let boundingBox = new FaceAPI.draw.DrawBox(scaledDetection.detection.box, scaledDetection.detection.box.x, scaledDetection.detection.box.y, scaledDetection.detection.box.width, scaledDetection.detection.box.height);
-
-                // new FaceAPI.draw.DrawBox(
-                //     scaledDetection.detection.box, 
-                //     {
-                //         boxColor: '#FFF',
-                //         lineWidth: 4
-                //     }
-                // ).draw(this.canvas);
-    
-                // new FaceAPI.draw.DrawTextField(
-                //     texts,
-                //     bottomRight,
-                //     {
-                //         fontSize: 16,
-                //         fontStyle: 'Arial',
-                //         padding: 10
-                //     }
-                // ).draw(this.canvas);
-
-                // clearInterval(this.detectInterval);
-                // this.videoFeed.pause();
-
-                // setTimeout(() => {
-                //     this.setState({
-                //         faceFound: true
-                //     });
-                // }, 1000);
             }
         }
+    }
+
+    videoListener() {
+        let videoWrapper = document.querySelector(`.${style.scannerVideoWrapper}`);
+        if(!this.canvas) {
+            this.canvas = FaceAPI.createCanvasFromMedia(this.videoFeed);
+            this.canvas.id = style.scannerResult;
+            videoWrapper.append(this.canvas);
+        }
+
+        this.displaySize = {
+            width: this.videoFeed.getBoundingClientRect().width,
+            height: this.videoFeed.getBoundingClientRect().height
+        };
+        FaceAPI.matchDimensions(this.canvas, this.displaySize);
+
+        this.detectInterval = setInterval(this.detectFace, 150);
+    }
+
+    setVideoListener() {
+        this.videoFeed.removeEventListener('playing', this.videoListener);
+        this.videoFeed.addEventListener("playing", this.videoListener);
     }
 
     loadDetector() {
@@ -149,20 +170,7 @@ class Scan extends Component {
                 this.startVideo();
             });
         
-            this.videoFeed.addEventListener("playing", () => {
-                let videoWrapper = document.querySelector(`.${style.scannerVideoWrapper}`);
-                this.canvas = FaceAPI.createCanvasFromMedia(this.videoFeed);
-                this.canvas.id = style.scannerResult;
-                videoWrapper.append(this.canvas);
-        
-                this.displaySize = {
-                    width: this.videoFeed.getBoundingClientRect().width,
-                    height: this.videoFeed.getBoundingClientRect().height
-                };
-                FaceAPI.matchDimensions(this.canvas, this.displaySize);
-        
-                this.detectInterval = setInterval(this.detectFace, 150);
-            });
+            this.setVideoListener();
         }
     }
 
@@ -198,10 +206,18 @@ class Scan extends Component {
 
     backToWelcome() {
         this.context.setBaseState('pertemuan', null);
+        this.context.setBaseState('siswa', null);
+        this.context.setBaseState('presensi', null);
         this.props.history.push('/');
     }
 
     render() {
+        let time = null;
+        if(this.context.baseState.presensi) {
+            let curr = new Date(`${this.context.baseState.presensi.tanggal} ${this.context.baseState.presensi.waktu}`);
+            time = `${curr.getDate()}-${curr.getMonth() + 1}-${curr.getFullYear()} ${curr.getHours()}:${curr.getMinutes()}`;
+        }
+
         return (
             <div className={"container " + style.container}>
                 <div className={style.scanTitle}>
@@ -218,7 +234,7 @@ class Scan extends Component {
                                 Tanggal dan Waktu
                             </div>
                             <div className={style.scannerSubtitle}>
-                                -
+                                { time ? time : '-' }
                             </div>
                         </div>
 
@@ -235,12 +251,12 @@ class Scan extends Component {
                                 Data Siswa
                             </div>
                             <div className={style.scannerSubtitle}>
-                                -
+                                { this.context.baseState.siswa ? this.context.baseState.siswa.nama : '-' }
                             </div>
                         </div>
 
                         <div className={style.scannerContent}>
-                            <img className={style.scannerImage} src={userImage}/>
+                            <img className={style.scannerImage} src={this.context.baseState.siswa ? this.context.baseState.siswa.foto : userImage}/>
                         </div>
                     </div>
                 </div>
