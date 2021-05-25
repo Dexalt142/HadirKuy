@@ -52,9 +52,6 @@ class Pertemuan extends Component {
         if(this.state.pertemuan) {
             if(this.state.pertemuan.length > 0) {
                 content = this.state.pertemuan.map(pertemuan => {
-                    let formatDate = new Date(`${pertemuan.tanggal} ${pertemuan.waktu}`);
-                    let tanggal = `${formatDate.getDate()}/${formatDate.getMonth() + 1}/${formatDate.getFullYear()}`;
-    
                     return (
                         <div className="col-md-3 mb-4" key={pertemuan.id}>
                             <div className={'card ' + style.pertemuanCard}>
@@ -68,7 +65,7 @@ class Pertemuan extends Component {
                                 </div>
                                 <div className="card-body">
                                     <div className="text-center">
-                                        <h4>{ tanggal }</h4>
+                                        <h4>{ pertemuan.date_time }</h4>
                                     </div>
                                     <Link className="btn btn-primary w-100" to={'/guru/pertemuan/' + pertemuan.id}>Detail</Link>
                                 </div>

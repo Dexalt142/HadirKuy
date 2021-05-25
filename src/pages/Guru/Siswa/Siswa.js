@@ -55,9 +55,6 @@ class Siswa extends Component {
         if(this.state.siswa) {
             if(this.state.siswa.length > 0) {
                 content = this.state.siswa.map(siswa => {
-                    let tl = new Date(siswa.tanggal_lahir);
-                    let ttl = `${siswa.tempat_lahir}, ${tl.getDate()}-${tl.getMonth() + 1}-${tl.getFullYear()}`;
-
                     return (
                         <div className="col-md-3 mb-4" key={siswa.id}>
                             <div className={'card ' + style.siswaCard}>
@@ -103,7 +100,7 @@ class Siswa extends Component {
                                         </div>
 
                                         <div className={style.siswaInfoSubTitle}>
-                                            { ttl }
+                                            { siswa.ttl }
                                         </div>
                                     </div>
 

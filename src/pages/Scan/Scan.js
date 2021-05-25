@@ -186,12 +186,6 @@ class Scan extends Component {
     }
 
     render() {
-        let time = null;
-        if(this.context.baseState.presensi) {
-            let curr = new Date(`${this.context.baseState.presensi.tanggal} ${this.context.baseState.presensi.waktu}`);
-            time = `${curr.getDate()}-${curr.getMonth() + 1}-${curr.getFullYear()} ${curr.getHours()}:${curr.getMinutes()}`;
-        }
-
         return (
             <div className={"container " + style.container}>
                 <div className={style.scanTitle}>
@@ -208,7 +202,7 @@ class Scan extends Component {
                                 Tanggal dan Waktu
                             </div>
                             <div className={style.scannerSubtitle}>
-                                { time ? time : '-' }
+                                { this.context.baseState.presensi ? this.context.baseState.presensi.date_time : '-' }
                             </div>
                         </div>
 
