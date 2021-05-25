@@ -19,23 +19,20 @@ class Scan extends Component {
         this.canvas = null;
         this.displaySize = null;
         this.detectInterval = null;
+        this.intervalTime = 200;
         this.state = {
-            sendingResult: false,
             faceFound: false,
-            presensi: null,
-            siswa: null,
         };
 
         this.loadReferenceData = this.loadReferenceData.bind(this);
         this.startVideo = this.startVideo.bind(this);
         this.detectFace = this.detectFace.bind(this);
-        this.loadDetector = this.loadDetector.bind(this);
-        this.rescanButton = this.rescanButton.bind(this);
-        this.backToWelcome = this.backToWelcome.bind(this);
-        this.setVideoListener = this.setVideoListener.bind(this);
         this.videoListener = this.videoListener.bind(this);
+        this.setVideoListener = this.setVideoListener.bind(this);
+        this.loadDetector = this.loadDetector.bind(this);
+        this.backToWelcome = this.backToWelcome.bind(this);
     }
-
+    
     async loadReferenceData() {
         let referenceData = [];
         let faceModel = FaceModel;
@@ -44,6 +41,20 @@ class Scan extends Component {
         }
 
         this.referenceData = referenceData;
+    }
+
+    base64ToImage(base64, fileName) {
+        const arr = base64.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bin = atob(arr[1]);
+        let binLength = bin.length;
+        const u8 = new Uint8Array(binLength);
+        while (binLength) {
+            u8[binLength - 1] = bin.charCodeAt(binLength - 1);
+            binLength -= 1;
+        }
+
+        return new File([u8], fileName, { type: mime });
     }
 
     startVideo() {
@@ -68,62 +79,33 @@ class Scan extends Component {
                 const scaledDetection = FaceAPI.resizeResults(detection, this.displaySize);
                 
                 if(scaledDetection) {
-                    const bottomRight = {
-                        x: scaledDetection.detection.box.bottomLeft.x - 2,
-                        y: scaledDetection.detection.box.bottomLeft.y + 2
-                    };
-                    const date = `${new Date().toLocaleDateString()}`;
-                    const time = `${new Date().toLocaleTimeString()}`;
-                    let texts = [
-                        `Confidence: ${(scaledDetection.detection.score * 100).toFixed(1)}%`,
-                        // `Tanggal: ${date}`,
-                        // `Waktu: ${time}`
-                    ];
-    
                     if(scaledDetection.detection.score > 0.9) {
                         if(this.referenceData) {
                             const faceMatcher = new FaceAPI.FaceMatcher(this.referenceData, 0.4);
-    
                             const result = faceMatcher.findBestMatch(scaledDetection.descriptor);
-    
-                            texts.push(result.toString());
-    
-                            // new FaceAPI.draw.DrawBox(
-                            //     scaledDetection.detection.box,
-                            //     {
-                            //         boxColor: '#FFF',
-                            //         lineWidth: 4
-                            //     }
-                            // ).draw(this.canvas);
-    
-                            // new FaceAPI.draw.DrawTextField(
-                            //     texts,
-                            //     bottomRight,
-                            //     {
-                            //         fontSize: 16,
-                            //         fontStyle: 'Arial',
-                            //         padding: 10
-                            //     }
-                            // ).draw(this.canvas);
 
                             if(result.label !== 'unknown') {
                                 clearInterval(this.detectInterval);
                                 this.setState({faceFound: true});
                                 this.videoFeed.pause();
+                                this.canvas.getContext('2d').drawImage(this.videoFeed, (this.canvas.width / 6) * -1, 0, this.canvas.width + (this.canvas.width / 3), this.canvas.height);
     
-                                const postresult = await axios.post('/presensi', {
-                                    pertemuan_id: this.context.baseState.pertemuan.id,
-                                    siswa_uid: result.label
-                                })
+                                const picture = this.base64ToImage(this.canvas.toDataURL('image/jpeg'), 'presensiImage');
+                                let formData = new FormData();
+                                formData.append('picture', picture, picture.name);
+                                formData.append('pertemuan_id', this.context.baseState.pertemuan.id);
+                                formData.append('siswa_uid', result.label);
+
+                                await axios.post('/presensi', formData)
                                 .then(res => {
                                     this.context.setBaseState('siswa', res.data.data.siswa);
-                                    this.context.setBaseState('presensi', res.data.data.presensi);
+                                    this.context.setBaseState('presensi', res.data.data.presensi); 
                                 })
                                 .catch(err => {
                                     this.videoFeed.play();
                                     this.setVideoListener();
                                     this.setState({ faceFound: false });
-                                    this.detectInterval = setInterval(this.detectFace, 150);
+                                    this.detectInterval = setInterval(this.detectFace, this.intervalTime);
                                 });
                             }
 
@@ -149,7 +131,7 @@ class Scan extends Component {
         };
         FaceAPI.matchDimensions(this.canvas, this.displaySize);
 
-        this.detectInterval = setInterval(this.detectFace, 150);
+        this.detectInterval = setInterval(this.detectFace, this.intervalTime);
     }
 
     setVideoListener() {
@@ -174,13 +156,12 @@ class Scan extends Component {
         }
     }
 
-    rescanButton() {
-        this.setState({
-            faceFound: false
-        });
-        setTimeout(() => {
-            this.loadDetector();
-        }, 1000);
+    backToWelcome() {
+        clearInterval(this.detectInterval);
+        this.context.setBaseState('pertemuan', null);
+        this.context.setBaseState('siswa', null);
+        this.context.setBaseState('presensi', null);
+        this.props.history.push('/');
     }
 
     componentDidMount() {
@@ -193,22 +174,15 @@ class Scan extends Component {
         }
 
         this.loadDetector();
+
     }
 
     componentWillUnmount() {
-        // if(this.videoFeed) {
-        //     this.videoFeed.getTracks().forEach(track => {
-        //         track.stop();
-        //     });
-        // }
-        clearInterval(this.detectInterval);
-    }
-
-    backToWelcome() {
-        this.context.setBaseState('pertemuan', null);
-        this.context.setBaseState('siswa', null);
-        this.context.setBaseState('presensi', null);
-        this.props.history.push('/');
+        if (this.videoFeed) {
+            this.videoFeed.srcObject.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
     }
 
     render() {
@@ -262,11 +236,12 @@ class Scan extends Component {
                 </div>
 
                 <div className="row mt-5">
-                    <div className="col-md-6 d-flex justify-content-center">
-                        <button className="btn btn-lg btn-primary px-5">Lihat Rekap</button>
-                    </div>
-
-                    <div className="col-md-6 d-flex justify-content-center">
+                    <div className="col-12 d-flex justify-content-around">
+                        {
+                            (this.context.baseState.presensi && this.context.baseState.siswa)
+                            ? <button className="btn btn-lg btn-primary px-5">Lihat Rekap</button>
+                            : null
+                        }
                         <button className="btn btn-lg btn-primary-inverse px-5" onClick={this.backToWelcome}>Tutup</button>
                     </div>
                 </div>
