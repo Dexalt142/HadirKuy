@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
+import $ from 'jquery';
 import layoutStyle from '../LayoutGuru.module.scss';
 import style from './Pertemuan.module.scss';
 
@@ -13,10 +14,38 @@ class Pertemuan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pertemuan: null
+            pertemuan: null,
+            createLoading: false,
+            nama: '',
+            tanggal: '',
+            waktu: '',
+            error: {
+                nama: null,
+                tanggal: null,
+                waktu: null,
+            }
         }
 
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.showErrorMessage = this.showErrorMessage.bind(this);
         this.fetchPertemuan = this.fetchPertemuan.bind(this);
+        this.createPertemuan = this.createPertemuan.bind(this);
+    }
+
+    handleInputChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    showErrorMessage(key) {
+        if (this.state.error[key]) {
+            return (
+                <div className="invalid-feedback">
+                    { this.state.error[key]}
+                </div>
+            )
+        }
     }
 
     fetchPertemuan() {
@@ -42,7 +71,84 @@ class Pertemuan extends Component {
         });
     }
 
+    createPertemuan(e) {
+        e.preventDefault();
+        this.setState({error: {nama: null, tanggal: null, waktu: null}});
+
+        if(this.state.nama && this.state.tanggal && this.state.waktu) {
+            this.setState({createLoading: true});
+            let localToken = localStorage.getItem('token');
+            let config = {
+                headers:
+                {
+                    Authorization: `Bearer ${localToken}`
+                }
+            }
+
+            axios.post('/pertemuan', {
+                nama: this.state.nama,
+                tanggal: this.state.tanggal,
+                waktu: this.state.waktu,
+            }, config)
+            .then(res => {
+                let newPertemuan = res.data.data;
+                let pertemuan = [];
+                if(this.state.pertemuan) {
+                    pertemuan = this.state.pertemuan;
+                }
+
+                pertemuan.push(newPertemuan);
+                $('#createPertemuanModal').modal('hide');
+                this.setState({pertemuan: pertemuan, nama: '', tanggal: '', waktu: '', createLoading: false});
+            })
+            .catch(err => {
+                let errResponse = err.response;
+                if(errResponse) {
+                    if(errResponse.status === 400) {
+                        let errMessage = {};
+                        if(errResponse.data.errors.nama) {
+                            errMessage['nama'] = errResponse.data.errors.nama[0];
+                        }
+
+                        if(errResponse.data.errors.tanggal) {
+                            errMessage['tanggal'] = errResponse.data.errors.tanggal[0];
+                        }
+
+                        if(errResponse.data.errors.waktu) {
+                            errMessage['waktu'] = errResponse.data.errors.waktu[0];
+                        }
+
+                        this.setState({error: errMessage, createLoading: false});
+                    }
+                } else {
+                    this.setState({error: {nama: 'Telah terjadi kesalahan', tanggal: null, waktu: null}, createLoading: false});
+                }
+            });
+        } else {
+            let newState = {};
+            if(!this.state.nama) {
+                newState['nama'] = 'Nama pertemuan tidak boleh kosong';
+            }
+
+            if(!this.state.tanggal) {
+                newState['tanggal'] = 'Tanggal tidak boleh kosong';
+            }
+
+            if(!this.state.waktu) {
+                newState['waktu'] = 'Waktu tidak boleh kosong';
+            }
+
+            this.setState({error: newState});
+        }
+    }
+
+    openModal() {
+        $('#createPertemuanModal').modal('show');
+    }
+
     componentDidMount() {
+        $('#createPertemuanModal').modal('hide');
+        $('.modal-backdrop').remove();
         this.fetchPertemuan();
     }
 
@@ -99,12 +205,48 @@ class Pertemuan extends Component {
         return (
             <div className="container-fluid">
                 <div className={layoutStyle.contentTitle}>
-                    Daftar Pertemuan
+                    <div>
+                        Daftar Pertemuan
+                    </div>
+                    <button className="btn btn-primary px-4" onClick={this.openModal}>Buat Pertemuan</button>
                 </div>
                 <div className="row">
                     {
                         content
                     }
+                </div>
+
+                <div className="modal fade" tabIndex="-1" id="createPertemuanModal">
+                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div className="modal-content">
+                            <form onSubmit={this.createPertemuan}>
+                                <div className="modal-body">
+                                    <h4 className="font-weight-bold">Buat Pertemuan</h4>
+                                        <div className="form-group">
+                                            <label>Nama pertemuan</label>
+                                            <input className={"form-control" + (this.state.error.nama ? ' is-invalid' : '')} type="text" name="nama" placeholder="Nama pertemuan" onChange={this.handleInputChange}/>
+                                            { this.showErrorMessage('nama') }
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Tanggal</label>
+                                            <input className={"form-control" + (this.state.error.tanggal ? ' is-invalid' : '')} type="date" name="tanggal" placeholder="Nama pertemuan" onChange={this.handleInputChange}/>
+                                            { this.showErrorMessage('tanggal') }
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Waktu</label>
+                                            <input className={"form-control" + (this.state.error.waktu ? ' is-invalid' : '')} type="time" name="waktu" placeholder="Nama pertemuan" onChange={this.handleInputChange}/>
+                                            { this.showErrorMessage('waktu') }
+                                        </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" className="btn btn-primary" disabled={this.state.createLoading}>Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
