@@ -32,7 +32,6 @@ class Siswa extends Component {
 
         axios.get('/siswa', config)
         .then(res => {
-            console.log(res.data.data);
             let siswa = res.data.data;
             this.setState({siswa: siswa});
         })

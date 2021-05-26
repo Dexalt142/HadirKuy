@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import BaseContext from './BaseContext';
 import PageWrapper from './pages/PageWrapper';
 import axios from 'axios';
+import $ from 'jquery';
 
 const BaseProvider = BaseContext.Provider;
 
@@ -11,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    axios.defaults.baseURL = 'http://hadirkuy.test/api';
+    axios.defaults.baseURL = 'https://hadirkuy.test/api';
 
     this.state = {
       api_url: 'http://hadirkuy.test',
@@ -52,6 +53,8 @@ class App extends Component {
         localStorage.clear('token');
       });
     }
+
+    $('.modal-backdrop').remove();
   }
 
   render() {

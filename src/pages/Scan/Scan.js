@@ -102,6 +102,15 @@ class Scan extends Component {
                                     this.context.setBaseState('presensi', res.data.data.presensi); 
                                 })
                                 .catch(err => {
+                                    if(err.response) {
+                                        if(err.response.status === 400) {
+                                            this.context.setBaseState('pertemuan', null);
+                                            this.context.setBaseState('siswa', null);
+                                            this.context.setBaseState('presensi', null);
+                                            return this.props.history.push('/');
+                                        }
+                                    }
+
                                     this.videoFeed.play();
                                     this.setVideoListener();
                                     this.setState({ faceFound: false });
@@ -179,9 +188,11 @@ class Scan extends Component {
 
     componentWillUnmount() {
         if (this.videoFeed) {
-            this.videoFeed.srcObject.getTracks().forEach(track => {
-                track.stop();
-            });
+            if(this.videoFeed.srcObject) {
+                this.videoFeed.srcObject.getTracks().forEach(track => {
+                    track.stop();
+                });
+            }
         }
     }
 
@@ -203,6 +214,13 @@ class Scan extends Component {
                             </div>
                             <div className={style.scannerSubtitle}>
                                 { this.context.baseState.presensi ? this.context.baseState.presensi.date_time : '-' }
+                                { 
+                                    this.context.baseState.presensi ?
+                                    (this.context.baseState.presensi.status === 'Terlambat' ?
+                                        <div className="badge badge-danger ml-2">{this.context.baseState.presensi.status}</div> :
+                                        <div className="badge badge-success ml-2">{this.context.baseState.presensi.status}</div> 
+                                    ) : ''
+                                }
                             </div>
                         </div>
 

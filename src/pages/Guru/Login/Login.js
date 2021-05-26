@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
@@ -127,6 +128,8 @@ class Login extends Component {
                             <button className="btn btn-primary w-100" type="submit" disabled={this.state.loginLoading}>Log in</button>
                         </div>
                     </form>
+
+                    <Link to={'/'}>Masuk sebagai siswa</Link>
                 </div>
 
                 <div className={style.illustrationContainer}>
