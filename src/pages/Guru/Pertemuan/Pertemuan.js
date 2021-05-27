@@ -1,11 +1,12 @@
 import { Component } from 'react';
-import { Link } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
 import $ from 'jquery';
 import layoutStyle from '../LayoutGuru.module.scss';
 import style from './Pertemuan.module.scss';
+
+import PertemuanCard from '../../../assets/components/PertemuanCard/PertemuanCard';
 
 class Pertemuan extends Component {
 
@@ -162,22 +163,7 @@ class Pertemuan extends Component {
                 content = this.state.pertemuan.map(pertemuan => {
                     return (
                         <div className="col-md-3 mb-4" key={pertemuan.id}>
-                            <div className={'card ' + style.pertemuanCard}>
-                                <div className="card-header bg-primary text-white d-flex justify-content-between">
-                                    <div>
-                                        {pertemuan.nama}
-                                    </div>
-                                    <div>
-                                        {pertemuan.kode_pertemuan}  
-                                    </div>
-                                </div>
-                                <div className="card-body">
-                                    <div className="text-center">
-                                        <h4>{ pertemuan.date_time }</h4>
-                                    </div>
-                                    <Link className="btn btn-primary w-100" to={'/guru/pertemuan/' + pertemuan.id}>Detail</Link>
-                                </div>
-                            </div>
+                            <PertemuanCard pertemuan={pertemuan}/>
                         </div>
                     );
                 });

@@ -5,7 +5,7 @@ import axios from 'axios';
 import layoutStyle from '../LayoutGuru.module.scss';
 import style from './Siswa.module.scss';
 
-import userImage from '../../../assets/img/user.svg';
+import SiswaCard from '../../../assets/components/SiswaCard/SiswaCard';
 
 class Siswa extends Component {
 
@@ -61,67 +61,10 @@ class Siswa extends Component {
 
         if(this.state.siswa) {
             if(this.state.siswa.length > 0) {
-                content = this.state.siswa.map((siswa, index) => {
+                content = this.state.siswa.map(siswa => {
                     return (
                         <div className="col-md-3 mb-4" key={siswa.id}>
-                            <div className={'card ' + style.siswaCard}>
-                                <div className={'card-body bg-primary ' + style.siswaCardBody}>
-                                    <div className={style.pictureWrapper}>
-                                        <img src={siswa.foto ? siswa.foto : userImage} alt={siswa.nama} />
-                                        <div className={style.pictureOverlay}></div>
-                                    </div>
-                                    <div className={style.siswaContent}>
-                                        <div className={style.siswaTitle}>
-                                            { siswa.nis }
-                                    </div>
-                                        <div className={style.siswaSubtitle}>
-                                            { siswa.nama }
-                                    </div>
-                                    </div>
-                                </div>
-
-                                <div className={style.siswaDetailContent} onClick={() => { this.detailSiswa(index) }}>
-                                    <div className={style.siswaInfoGroup}>
-                                        <div className={style.siswaInfoTitle}>
-                                            NIS
-                                        </div>
-
-                                        <div className={style.siswaInfoSubTitle}>
-                                            { siswa.nis }
-                                        </div>
-                                    </div>
-
-                                    <div className={style.siswaInfoGroup}>
-                                        <div className={style.siswaInfoTitle}>
-                                            NAMA
-                                        </div>
-
-                                        <div className={style.siswaInfoSubTitle}>
-                                            { siswa.nama }
-                                        </div>
-                                    </div>
-
-                                    <div className={style.siswaInfoGroup}>
-                                        <div className={style.siswaInfoTitle}>
-                                            TTL
-                                        </div>
-
-                                        <div className={style.siswaInfoSubTitle}>
-                                            { siswa.ttl }
-                                        </div>
-                                    </div>
-
-                                    <div className={style.siswaInfoGroup}>
-                                        <div className={style.siswaInfoTitle}>
-                                            Jenis Kelamin
-                                        </div>
-
-                                        <div className={style.siswaInfoSubTitle}>
-                                            { (siswa.jenis_kelamin === 'L') ? 'Laki-laki' : 'Perempuan' }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <SiswaCard siswa={siswa} history={this.props.history}/>
                         </div>
                     );
                 })
