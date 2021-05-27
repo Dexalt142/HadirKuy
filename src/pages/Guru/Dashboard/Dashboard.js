@@ -38,6 +38,11 @@ class Dashboard extends Component {
             }
         })
         .catch(err => {
+            if(err.response) {
+                if(err.response.status === 401) {
+                    this.context.revokeAuth();
+                }
+            }
         });
     }
     

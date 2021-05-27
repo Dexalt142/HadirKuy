@@ -1,11 +1,14 @@
 import { Component } from 'react';
 import axios from 'axios';
+import BaseContext from '../../../../BaseContext';
 
 import $ from 'jquery';
 import layoutStyle from '../../LayoutGuru.module.scss';
 import style from './SiswaDetail.module.scss';
 
 class SiswaDetail extends Component {
+
+    static contextType = BaseContext;
 
     constructor(props) {
         super(props);
@@ -37,6 +40,8 @@ class SiswaDetail extends Component {
             if (err.response) {
                 if (err.response.status === 404) {
                     return this.props.history.push('/guru/siswa');
+                } else if (err.response.status === 401) {
+                    this.context.revokeAuth();
                 }
             }
         });

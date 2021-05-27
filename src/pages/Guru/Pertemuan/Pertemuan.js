@@ -66,6 +66,8 @@ class Pertemuan extends Component {
             if(err.response) {
                 if(err.response.status === 404) {
                     this.setState({pertemuan: []});
+                } else if (err.response.status === 401) {
+                    this.context.revokeAuth();
                 }
             }
         });

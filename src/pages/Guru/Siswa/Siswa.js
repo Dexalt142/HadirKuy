@@ -38,6 +38,8 @@ class Siswa extends Component {
             if(err.response) {
                 if(err.response.status === 404) {
                     this.setState({siswa: []});
+                } else if (err.response.status === 401) {
+                    this.context.revokeAuth();
                 }
             }
         });

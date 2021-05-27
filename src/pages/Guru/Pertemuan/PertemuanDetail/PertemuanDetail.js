@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import axios from 'axios';
-
+import BaseContext from '../../../../BaseContext';
 import layoutStyle from '../../LayoutGuru.module.scss';
 import style from './PertemuanDetail.module.scss';
 import $ from 'jquery';
 
 class PertemuanDetail extends Component {
+
+    static contextType = BaseContext;
 
     constructor(props) {
         super(props);
@@ -43,6 +45,8 @@ class PertemuanDetail extends Component {
             if(err.response) {
                 if(err.response.status === 404) {
                     return this.props.history.push('/guru/pertemuan');
+                } else if (err.response.status === 401) {
+                    this.context.revokeAuth();
                 }
             }
         });
