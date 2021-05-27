@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
@@ -44,6 +43,13 @@ class Siswa extends Component {
         });
     }
 
+    detailSiswa(e) {
+        if(this.state.siswa || this.state.siswa.length > 0) {
+            let targetSiswa = this.state.siswa[e];
+            return this.props.history.push('/guru/siswa/' + targetSiswa.id);
+        }
+    }
+
     componentDidMount() {
         this.fetchSiswa();
     }
@@ -53,13 +59,13 @@ class Siswa extends Component {
 
         if(this.state.siswa) {
             if(this.state.siswa.length > 0) {
-                content = this.state.siswa.map(siswa => {
+                content = this.state.siswa.map((siswa, index) => {
                     return (
                         <div className="col-md-3 mb-4" key={siswa.id}>
                             <div className={'card ' + style.siswaCard}>
                                 <div className={'card-body bg-primary ' + style.siswaCardBody}>
                                     <div className={style.pictureWrapper}>
-                                        <img src={siswa.foto ? siswa.foto : userImage} />
+                                        <img src={siswa.foto ? siswa.foto : userImage} alt={siswa.nama} />
                                         <div className={style.pictureOverlay}></div>
                                     </div>
                                     <div className={style.siswaContent}>
@@ -72,7 +78,7 @@ class Siswa extends Component {
                                     </div>
                                 </div>
 
-                                <div className={style.siswaDetailContent}>
+                                <div className={style.siswaDetailContent} onClick={() => { this.detailSiswa(index) }}>
                                     <div className={style.siswaInfoGroup}>
                                         <div className={style.siswaInfoTitle}>
                                             NIS
@@ -109,7 +115,7 @@ class Siswa extends Component {
                                         </div>
 
                                         <div className={style.siswaInfoSubTitle}>
-                                            { (siswa.jenis_kelamin == 'L') ? 'Laki-laki' : 'Perempuan' }
+                                            { (siswa.jenis_kelamin === 'L') ? 'Laki-laki' : 'Perempuan' }
                                         </div>
                                     </div>
                                 </div>
