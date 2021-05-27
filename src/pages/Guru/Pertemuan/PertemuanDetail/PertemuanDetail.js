@@ -40,6 +40,11 @@ class PertemuanDetail extends Component {
             }
         })
         .catch(err => {
+            if(err.response) {
+                if(err.response.status === 404) {
+                    return this.props.history.push('/guru/pertemuan');
+                }
+            }
         });
     }
 
