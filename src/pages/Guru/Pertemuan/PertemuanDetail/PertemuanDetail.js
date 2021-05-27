@@ -227,7 +227,7 @@ class PertemuanDetail extends Component {
                             Foto Siswa
                         </div>
                         <div className={layoutStyle.modalInfoImage}>
-                            <img src={this.state.detailPresensi.siswa.foto} />
+                            <img src={this.state.detailPresensi.siswa.foto} alt='Foto siswa'/>
                         </div>
                     </div>
 
@@ -236,7 +236,7 @@ class PertemuanDetail extends Component {
                             Bukti Isi Presensi
                         </div>
                         <div className={layoutStyle.modalInfoImage}>
-                            <img src={this.state.detailPresensi.presensi.foto} />
+                            <img src={this.state.detailPresensi.presensi.foto} alt='Foto presensi'/>
                         </div>
                     </div>
 
@@ -268,7 +268,7 @@ class PertemuanDetail extends Component {
                             Foto Siswa
                         </div>
                         <div className={layoutStyle.modalInfoImage}>
-                            <img src={this.state.detailSiswa.foto} />
+                            <img src={this.state.detailSiswa.foto} alt='Foto siswa'/>
                         </div>
                     </div>
                 </div>

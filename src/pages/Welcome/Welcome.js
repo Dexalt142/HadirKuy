@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import style from './Welcome.module.scss';
 import BaseContext from '../../BaseContext';
 import axios from 'axios';
@@ -40,7 +40,7 @@ class Welcome extends Component {
             })
             .catch(err => {
                 if(err.response) {
-                    if(err.response.data.status = 404) {
+                    if(err.response.data.status === 404) {
                         this.setState({error: 'Pertemuan tidak ditemukan'});
                     }
                 } else {

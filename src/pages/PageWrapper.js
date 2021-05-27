@@ -17,8 +17,6 @@ import PertemuanDetailPage from './Guru/Pertemuan/PertemuanDetail/PertemuanDetai
 
 import NotFoundPage from './Error/NotFound';
 
-import Loading from '../assets/components/Loading/Loading';
-
 class PageWrapper extends Component {
 
     static contextType = BaseContext;
