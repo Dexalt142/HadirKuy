@@ -10,6 +10,7 @@ import LoginPage from './Guru/Login/Login';
 import LayoutGuru from './Guru/LayoutGuru';
 import DashboardPage from './Guru/Dashboard/Dashboard';
 import SiswaPage from './Guru/Siswa/Siswa';
+import SiswaDetailPage from './Guru/Siswa/SiswaDetail/SiswaDetail';
 import PertemuanPage from './Guru/Pertemuan/Pertemuan';
 import PertemuanDetailPage from './Guru/Pertemuan/PertemuanDetail/PertemuanDetail';
 
@@ -20,10 +21,6 @@ import Loading from '../assets/components/Loading/Loading';
 class PageWrapper extends Component {
 
     static contextType = BaseContext;
-
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
     }
@@ -44,6 +41,9 @@ class PageWrapper extends Component {
 
             case 'guru/siswa':
                 return <LayoutGuru><SiswaPage {...this.props} /></LayoutGuru>;
+
+            case 'guru/siswa/detail':
+                return <LayoutGuru><SiswaDetailPage {...this.props} /></LayoutGuru>;
 
             case 'guru/pertemuan':
                 return <LayoutGuru><PertemuanPage {...this.props} /></LayoutGuru>;
