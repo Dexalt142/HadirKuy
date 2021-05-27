@@ -5,6 +5,8 @@ import layoutStyle from '../../LayoutGuru.module.scss';
 import style from './PertemuanDetail.module.scss';
 import $ from 'jquery';
 
+import StatsCard from '../../../../assets/components/StatsCard/StatsCard';
+
 class PertemuanDetail extends Component {
 
     static contextType = BaseContext;
@@ -95,55 +97,19 @@ class PertemuanDetail extends Component {
                 <div>
                     <div className="row">
                         <div className="col-md-3 mb-4">
-                            <div className={'card ' + style.infoCard}>
-                                <div className="card-body">
-                                    <div className={style.infoCardTitle}>
-                                        { total }
-                                    </div>
-                                    <div className={style.infoCardSubtitle}>
-                                        Jumlah Siswa
-                                    </div>
-                                </div>
-                            </div>
+                            <StatsCard title='Jumlah Siswa' value={total}/>
                         </div>
 
                         <div className="col-md-3 mb-4">
-                            <div className={'card ' + style.infoCard}>
-                                <div className="card-body">
-                                    <div className={style.infoCardTitle}>
-                                        { present }
-                                    </div>
-                                    <div className={style.infoCardSubtitle}>
-                                        Siswa Tepat Waktu
-                                    </div>
-                                </div>
-                            </div>
+                            <StatsCard title='Siswa Tepat Waktu' value={present} />
                         </div>
 
                         <div className="col-md-3 mb-4">
-                            <div className={'card ' + style.infoCard}>
-                                <div className="card-body">
-                                    <div className={style.infoCardTitle}>
-                                        { late }
-                                    </div>
-                                    <div className={style.infoCardSubtitle}>
-                                        Siswa Terlambat
-                                    </div>
-                                </div>
-                            </div>
+                            <StatsCard title='Siswa Terlambat' value={late} />
                         </div>
 
                         <div className="col-md-3 mb-4">
-                            <div className={'card ' + style.infoCard}>
-                                <div className="card-body">
-                                    <div className={style.infoCardTitle}>
-                                        { absent }
-                                    </div>
-                                    <div className={style.infoCardSubtitle}>
-                                        Siswa Tidak Hadir
-                                    </div>
-                                </div>
-                            </div>
+                            <StatsCard title='Siswa Tidak Hadir' value={absent} />
                         </div>
                     </div>
                     <div className="row">

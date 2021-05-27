@@ -3,7 +3,8 @@ import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
 import layoutStyle from '../LayoutGuru.module.scss';
-import style from './Dashboard.module.scss';
+
+import StatsCard from '../../../assets/components/StatsCard/StatsCard';
 
 class Dashboard extends Component {
 
@@ -63,29 +64,11 @@ class Dashboard extends Component {
             content = (
                 <div className="row">
                     <div className="col-md-3 mb-4">
-                        <div className={'card ' + style.infoCard}>
-                            <div className="card-body">
-                                <div className={style.infoCardTitle}>
-                                    { this.state.stats.siswa }
-                                </div>
-                                <div className={style.infoCardSubtitle}>
-                                    Jumlah Siswa
-                                </div>
-                            </div>
-                        </div>
+                        <StatsCard title='Jumlah Siswa' value={this.state.stats.siswa}/>
                     </div>
 
                     <div className="col-md-3 mb-4">
-                        <div className={'card ' + style.infoCard}>
-                            <div className="card-body">
-                                <div className={style.infoCardTitle}>
-                                    { this.state.stats.pertemuan }
-                                </div>
-                                <div className={style.infoCardSubtitle}>
-                                    Jumlah Pertemuan
-                                </div>
-                            </div>
-                        </div>
+                        <StatsCard title='Jumlah Pertemuan' value={this.state.stats.pertemuan}/>
                     </div>
 
                     <div className="col-md-6 mb-4">
