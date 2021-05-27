@@ -223,49 +223,49 @@ class PertemuanDetail extends Component {
 
         if(this.state.detailPresensi) {
             modalContent = (
-                <div className={style.modalContent}>
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                <div className={layoutStyle.modalContent}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Nama
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.detailPresensi.siswa.nama }
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             NIS
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.detailPresensi.siswa.nis }
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Tanggal Isi Presensi
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.detailPresensi.presensi.date_time }
                             <div className={"badge ml-2 " + (this.state.detailPresensi.presensi.status === 'Terlambat' ? 'badge-danger' : 'badge-success')}>{ this.state.detailPresensi.presensi.status }</div>
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Foto Siswa
                         </div>
-                        <div className={style.modalInfoImage}>
+                        <div className={layoutStyle.modalInfoImage}>
                             <img src={this.state.detailPresensi.siswa.foto} />
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Bukti Isi Presensi
                         </div>
-                        <div className={style.modalInfoImage}>
+                        <div className={layoutStyle.modalInfoImage}>
                             <img src={this.state.detailPresensi.presensi.foto} />
                         </div>
                     </div>
@@ -274,30 +274,30 @@ class PertemuanDetail extends Component {
             );
         } else if(this.state.detailSiswa) {
             modalContent = (
-                <div className={style.modalContent}>
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                <div className={layoutStyle.modalContent}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Nama
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             {this.state.detailSiswa.nama}
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             NIS
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             {this.state.detailSiswa.nis}
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Foto Siswa
                         </div>
-                        <div className={style.modalInfoImage}>
+                        <div className={layoutStyle.modalInfoImage}>
                             <img src={this.state.detailSiswa.foto} />
                         </div>
                     </div>

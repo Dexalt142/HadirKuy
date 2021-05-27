@@ -170,40 +170,40 @@ class SiswaDetail extends Component {
 
         if(this.state.presensi) {
             modalContent = (
-                <div className={style.modalContent}>
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                <div className={layoutStyle.modalContent}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Nama Pertemuan
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.presensi.pertemuan.nama }
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Jadwal Pertemuan
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.presensi.pertemuan.date_time }
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Waktu Isi Presensi
                         </div>
-                        <div className={style.modalInfoSubtitle}>
+                        <div className={layoutStyle.modalInfoSubtitle}>
                             { this.state.presensi.date_time }
                             <div className={'badge ml-2 ' + (this.state.presensi.status === 'Tepat Waktu' ? 'badge-success' : 'badge-danger')}>{ this.state.presensi.status }</div>
                         </div>
                     </div>
 
-                    <div className={style.modalInfoGroup}>
-                        <div className={style.modalInfoTitle}>
+                    <div className={layoutStyle.modalInfoGroup}>
+                        <div className={layoutStyle.modalInfoTitle}>
                             Bukti Isi Presensi
                         </div>
-                        <div className={style.modalInfoImage}>
+                        <div className={layoutStyle.modalInfoImage}>
                             <img src={this.state.presensi.foto} alt='Bukti presensi'/>
                         </div>
                     </div>

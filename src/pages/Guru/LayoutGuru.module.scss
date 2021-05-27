@@ -85,3 +85,33 @@ $navbarHeight: 60px;
         }
     }
 }
+
+.modalContent {
+    .modalInfoGroup {
+        margin-bottom: 1.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .modalInfoTitle {
+            font-weight: 600;
+        }
+
+        .modalInfoSubtitle {
+            font-size: 1.5rem;
+        }
+
+        .modalInfoImage {
+            display: flex;
+            justify-content: center;
+            padding-top: 1rem;
+
+            img {
+                width: 75%;
+                border-radius: 1rem;
+                box-shadow: 0px 5px 10px rgb(0 0 0 / 25%);
+            }
+        }
+    }
+}

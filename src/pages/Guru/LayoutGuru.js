@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BaseContext from '../../BaseContext';
 
+import $ from 'jquery';
 import * as Feather from 'react-feather';
 import style from './LayoutGuru.module.scss';
 
@@ -29,9 +30,18 @@ class LayoutGuru extends Component {
         return '';
     }
 
+    openProfileModal() {
+        $('#profileModal').modal('show');
+    }
+
     logout() {
         localStorage.removeItem('token');
         this.context.setBaseState('user_data', null);
+    }
+
+    componentDidMount() { 
+        $('#profileModal').modal('hide');
+        $('.modal-backdrop').remove();
     }
     
     render() {
@@ -66,7 +76,7 @@ class LayoutGuru extends Component {
                         </div>
 
                         <div>
-                            <button className={style.navLink}>
+                            <button className={style.navLink} onClick={this.openProfileModal}>
                                 <Feather.User/>
                                 <span className={style.navTitle}>{ dataGuru.nama }</span>
                             </button>
@@ -83,6 +93,60 @@ class LayoutGuru extends Component {
                 <div className={style.contentContainer}>
 
                     { this.props.children }
+                </div>
+
+                <div className="modal fade" tabIndex="-1" id="profileModal">
+                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {
+                                    dataGuru ?
+                                    <div className={style.modalContent}>
+                                        <div className={style.modalInfoGroup}>
+                                            <div className={style.modalInfoTitle}>
+                                                Nama
+                                            </div>
+                                            <div className={style.modalInfoSubtitle}>
+                                                { dataGuru.nama }
+                                            </div>
+                                        </div>
+
+                                        <div className={style.modalInfoGroup}>
+                                            <div className={style.modalInfoTitle}>
+                                                NIP
+                                            </div>
+                                            <div className={style.modalInfoSubtitle}>
+                                                { dataGuru.nip }
+                                            </div>
+                                        </div>
+
+                                        <div className={style.modalInfoGroup}>
+                                            <div className={style.modalInfoTitle}>
+                                                Email
+                                            </div>
+                                            <div className={style.modalInfoSubtitle}>
+                                                { dataGuru.email }
+                                            </div>
+                                        </div>
+
+                                        <div className={style.modalInfoGroup}>
+                                            <div className={style.modalInfoTitle}>
+                                                Mata Pelajaran
+                                            </div>
+                                            <div className={style.modalInfoSubtitle}>
+                                                { dataGuru.mata_pelajaran }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    : ''
+                                }
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
