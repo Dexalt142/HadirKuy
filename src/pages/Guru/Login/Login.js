@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
-import mainStyle from '../../../assets/scss/main.scss';
 import style from './Login.module.scss';
 
 class Login extends Component {

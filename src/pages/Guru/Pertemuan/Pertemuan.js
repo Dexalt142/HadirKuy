@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BaseContext from '../../../BaseContext';
 import axios from 'axios';
 
