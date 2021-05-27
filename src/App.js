@@ -69,11 +69,12 @@ class App extends Component {
           <Switch>
             <Route path="/" exact render={(props) => <PageWrapper pageName='welcome' {...props}/>}/>
             <Route path="/scan" exact render={(props) => <PageWrapper pageName='scan' {...props}/>}/>
+            <Route path="/rekap" exact render={(props) => <PageWrapper pageName='rekap' {...props}/>}/>
             <Route path="/guru" exact render={(props) => <PageWrapper pageName='guru' auth='private' {...props}/>}/>
             <Route path="/guru/siswa" exact render={(props) => <PageWrapper pageName='guru/siswa' auth='private' {...props}/>}/>
             <Route path="/guru/siswa/:id" exact render={(props) => <PageWrapper pageName='guru/siswa/detail' auth='private' {...props}/>}/>
             <Route path="/guru/pertemuan" exact render={(props) => <PageWrapper pageName='guru/pertemuan' auth='private' {...props}/>}/>
-            <Route path="/guru/pertemuan/:id" render={(props) => <PageWrapper pageName='guru/pertemuan/detail' auth='private' {...props}/>}/>
+            <Route path="/guru/pertemuan/:id" exact render={(props) => <PageWrapper pageName='guru/pertemuan/detail' auth='private' {...props}/>}/>
             <Route path="/guru/login" exact render={(props) => <PageWrapper pageName='guru/login' auth='guest' {...props}/>}/>
             
             <Route render={(props) => <PageWrapper pageName='' {...props} />} />

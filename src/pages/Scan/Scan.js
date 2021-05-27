@@ -30,6 +30,7 @@ class Scan extends Component {
         this.videoListener = this.videoListener.bind(this);
         this.setVideoListener = this.setVideoListener.bind(this);
         this.loadDetector = this.loadDetector.bind(this);
+        this.viewRekap = this.viewRekap.bind(this);
         this.backToWelcome = this.backToWelcome.bind(this);
     }
     
@@ -165,21 +166,22 @@ class Scan extends Component {
         }
     }
 
+    viewRekap() {
+        clearInterval(this.detectInterval);
+        return this.props.history.push('/rekap');
+    }
+
     backToWelcome() {
         clearInterval(this.detectInterval);
         this.context.setBaseState('pertemuan', null);
         this.context.setBaseState('siswa', null);
         this.context.setBaseState('presensi', null);
-        this.props.history.push('/');
+        return this.props.history.push('/');
     }
 
     componentDidMount() {
         if(!this.context.baseState.pertemuan) {
             return this.props.history.push('/');
-        }
-
-        if(this.context.baseState.pertemuan && this.context.baseState.presensi) {
-            
         }
 
         this.loadDetector();
@@ -242,7 +244,7 @@ class Scan extends Component {
                         </div>
 
                         <div className={style.scannerContent}>
-                            <img className={style.scannerImage} src={this.context.baseState.siswa ? this.context.baseState.siswa.foto : userImage}/>
+                            <img className={style.scannerImage} src={this.context.baseState.siswa ? this.context.baseState.siswa.foto : userImage} alt='Foto siswa'/>
                         </div>
                     </div>
                 </div>
@@ -251,7 +253,7 @@ class Scan extends Component {
                     <div className="col-12 d-flex justify-content-around">
                         {
                             (this.context.baseState.presensi && this.context.baseState.siswa)
-                            ? <button className="btn btn-lg btn-primary px-5">Lihat Rekap</button>
+                            ? <button className="btn btn-lg btn-primary px-5" onClick={this.viewRekap}>Lihat Rekap</button>
                             : null
                         }
                         <button className="btn btn-lg btn-primary-inverse px-5" onClick={this.backToWelcome}>Tutup</button>

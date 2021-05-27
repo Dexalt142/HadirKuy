@@ -5,6 +5,7 @@ import AuthHandler from '../assets/components/AuthHandler/AuthHandler';
 
 import WelcomePage from './Welcome/Welcome';
 import ScanPage from './Scan/Scan';
+import RekapPage from './RekapPresensi/RekapPresensi';
 import LoginPage from './Guru/Login/Login';
 
 import LayoutGuru from './Guru/LayoutGuru';
@@ -32,6 +33,9 @@ class PageWrapper extends Component {
 
             case 'scan':
                 return <ScanPage {...this.props}/>;
+
+            case 'rekap':
+                return <RekapPage {...this.props}/>;
             
             case 'guru/login':
                 return <LoginPage {...this.props}/>;
