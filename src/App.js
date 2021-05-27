@@ -25,13 +25,18 @@ class App extends Component {
     };
 
     this.setBaseState = this.setBaseState.bind(this);
-
+    this.revokeAuth = this.revokeAuth.bind(this);
   }
 
   setBaseState(key, data) {
     this.setState({
       [key]: data
     });
+  }
+
+  revokeAuth() {
+    localStorage.removeItem('token');
+    this.setState({user_data: null});
   }
 
   componentDidMount() {
@@ -59,13 +64,14 @@ class App extends Component {
 
   render() {
     return (
-      <BaseProvider value={{baseState: this.state, setBaseState: this.setBaseState}}>
+      <BaseProvider value={{baseState: this.state, setBaseState: this.setBaseState, revokeAuth: this.revokeAuth}}>
         <BrowserRouter>
           <Switch>
             <Route path="/" exact render={(props) => <PageWrapper pageName='welcome' {...props}/>}/>
             <Route path="/scan" exact render={(props) => <PageWrapper pageName='scan' {...props}/>}/>
             <Route path="/guru" exact render={(props) => <PageWrapper pageName='guru' auth='private' {...props}/>}/>
             <Route path="/guru/siswa" exact render={(props) => <PageWrapper pageName='guru/siswa' auth='private' {...props}/>}/>
+            <Route path="/guru/siswa/:id" exact render={(props) => <PageWrapper pageName='guru/siswa/detail' auth='private' {...props}/>}/>
             <Route path="/guru/pertemuan" exact render={(props) => <PageWrapper pageName='guru/pertemuan' auth='private' {...props}/>}/>
             <Route path="/guru/pertemuan/:id" render={(props) => <PageWrapper pageName='guru/pertemuan/detail' auth='private' {...props}/>}/>
             <Route path="/guru/login" exact render={(props) => <PageWrapper pageName='guru/login' auth='guest' {...props}/>}/>
