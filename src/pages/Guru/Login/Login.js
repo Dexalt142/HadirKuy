@@ -63,6 +63,8 @@ class Login extends Component {
                 if (err.response) {
                     if (err.response.status === 404) {
                         this.setState({ error: { email: 'Email atau password salah', password: 'Email atau password salah' }});
+                    } else {
+                        this.setState({ error: {email: 'Telah terjadi kesalahan' }});
                     }
                 } else {
                     this.setState({ error: {email: 'Telah terjadi kesalahan' }});

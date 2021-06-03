@@ -42,6 +42,8 @@ class Welcome extends Component {
                 if(err.response) {
                     if(err.response.data.status === 404) {
                         this.setState({error: 'Pertemuan tidak ditemukan'});
+                    } else {
+                        this.setState({error: 'Telah terjadi kesalahan'});
                     }
                 } else {
                     this.setState({error: 'Telah terjadi kesalahan'});
