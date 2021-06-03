@@ -61,7 +61,7 @@ class Login extends Component {
             })
             .catch(err => {
                 if (err.response) {
-                    if (err.response.status === 404) {
+                    if (err.response.status === 400) {
                         this.setState({ error: { email: 'Email atau password salah', password: 'Email atau password salah' }});
                     } else {
                         this.setState({ error: {email: 'Telah terjadi kesalahan' }});
